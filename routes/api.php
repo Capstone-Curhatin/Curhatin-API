@@ -20,5 +20,5 @@ Route::get('request_otp', [UserController::class, 'requestOtp']);
 Route::post('verify_otp', [UserController::class, 'verifyOtp']);
 
 Route::middleware(['auth:sanctum'])->group(function (){
-
+    Route::get('fetch', [UserController::class, 'fetch']);
 });

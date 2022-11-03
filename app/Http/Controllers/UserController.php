@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller {
 
+    public function fetch(Request $request){
+        return ResponseFormatter::success($request->user(), 'Success');
+    }
+
     public function login(Request $request) {
 
         try {
@@ -65,15 +69,25 @@ class UserController extends Controller {
                 return ResponseFormatter::error(null, $validate->errors()->all());
             }
 
+            $otp = rand(1000, 9999);
+
             User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'role' => $request->role,
+                'otp' => $otp,
                 'password' => Hash::make($request->password)
             ]);
 
-            return ResponseFormatter::success([], 'User Registered');
+            $mail_details = [
+                'subject' => 'Your OTP',
+                'body' => 'Your OTP is: ' . $otp
+            ];
+
+            Mail::to($request->email)->send(new MailNotify($mail_details));
+
+            return ResponseFormatter::success([], 'User Registered, Check tour email');
 
         }catch(Exception $err){
             return ResponseFormatter::error(null, $err);
