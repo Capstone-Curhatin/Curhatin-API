@@ -87,7 +87,7 @@ class UserController extends Controller {
 
             Mail::to($request->email)->send(new MailNotify($mail_details));
 
-            return ResponseFormatter::success([], 'User Registered, Check tour email');
+            return ResponseFormatter::success(null, 'User Registered, Check tour email');
 
         }catch(Exception $err){
             return ResponseFormatter::error(null, $err);
