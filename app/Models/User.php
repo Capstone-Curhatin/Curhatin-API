@@ -62,4 +62,8 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function stories(){
+        return $this->hasMany(Story::class, 'user_id', 'id');
+    }
 }

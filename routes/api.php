@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\StoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,4 +23,11 @@ Route::post('verify_otp', [UserController::class, 'verifyOtp']);
 
 Route::middleware(['auth:sanctum'])->group(function (){
     Route::get('fetch', [UserController::class, 'fetch']);
+
+    // category
+    Route::get('getAllCategory', [CategoryController::class, 'getAllCategory']);
+
+    // story
+    Route::post('createStory', [StoryController::class, 'createStory']);
+    Route::get('getAllStory', [StoryController::class, 'getAllStory']);
 });

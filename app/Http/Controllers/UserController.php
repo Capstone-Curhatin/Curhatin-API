@@ -109,7 +109,7 @@ class UserController extends Controller {
 
             return ResponseFormatter::success(null, 'Your OTP sent successfully, check your email');
         }else{
-            return ResponseFormatter::error(null, 'Failed request OTP!, check your email address!');
+            return ResponseFormatter::error(null, 'Failed request OTP!');
         }
     }
 
