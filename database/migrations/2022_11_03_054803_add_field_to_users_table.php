@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('phone');
             $table->boolean('is_premium')->nullable();
             $table->dateTime('premium_period')->nullable();
+            $table->integer('otp')->nullable();
         });
     }
 
@@ -34,6 +35,7 @@ return new class extends Migration
             $table->dropColumn('phone');
             $table->dropColumn('is_premium');
             $table->dropColumn('premium_period');
+            $table->dropColumn('otp');
         });
     }
 };

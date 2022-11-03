@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/request_otp', [\App\Http\Controllers\UserController::class, 'requestOtp']);
+
 Route::get('/', function () {
     return view('welcome');
 });

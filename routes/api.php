@@ -16,6 +16,8 @@ use App\Http\Controllers\UserController;
 
 Route::post('login', [UserController::class, 'login']);
 Route::post('register', [UserController::class, 'register']);
+Route::get('request_otp', [UserController::class, 'requestOtp']);
+Route::post('verify_otp', [UserController::class, 'verifyOtp']);
 
 Route::middleware(['auth:sanctum'])->group(function (){
 

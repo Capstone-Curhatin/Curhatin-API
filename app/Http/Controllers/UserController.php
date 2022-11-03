@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MailNotify;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Helpers\ResponseFormatter;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Fortify\Rules\Password;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -45,48 +47,11 @@ class UserController extends Controller {
             ], 'Authenticated');
 
         } catch (Exception $err) {
-            return ResponseFormatter::error([
-                'message' => 'Something went wrong',
-                'error' => $err,
-            ], 'Authentication Failed');
+            return ResponseFormatter::error(null, 'Authentication Failed');
         }
-
-//        try {
-//            $validate = Validator::make($request->all(), [
-//               'email' => ['required', 'email'],
-//               'password' => ['required', 'password']
-//            ]);
-//
-//            if ($validate->fails()) {
-//                return ResponseFormatter::error(null, $validate->errors()->all());
-//            }
-//
-//
-//            return ResponseFormatter::success("oke", "masok");
-//
-////            $credentials = request(['email', 'password']);
-////            if(!Auth::attempt($credentials)){
-////                return ResponseFormatter::error(null, 'Login Failed');
-////            }
-////
-////            $user = User::where('email', $request->email)->first();
-////            if (!Hash::check($request->password, $user->password)) {
-////                throw new \Exception('Invalid Credentials');
-////            }
-////
-////            $token = $user->createToken('authToken')->plainTextToken;
-////            return ResponseFormatter::success([
-////                'access_token' => $token,
-////                'token_type' => 'Bearer',
-////                'user' => $user
-////            ], 'Authenticated');
-//        }catch (\Exception $err) {
-//            return ResponseFormatter::error(null, 'Authentication Failed');
-//        }
     }
 
     public function register(Request $request) {
-
         try{
             $validate = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'max:30'],
@@ -115,4 +80,31 @@ class UserController extends Controller {
         }
     }
 
+    public function requestOtp(Request $request) {
+        $otp = rand(1000, 9999);
+        Log::info("otp = " . $otp);
+        $user = User::where('email', $request->email)->update(['otp' => $otp]);
+
+        if ($user) {
+            $mail_details = [
+                'subject' => 'Your OTP',
+                'body' => 'Your OTP is: ' . $otp
+            ];
+
+            Mail::to($request->email)->send(new MailNotify($mail_details));
+
+            return ResponseFormatter::success(null, 'Your OTP sent successfully, check your email');
+        }else{
+            return ResponseFormatter::error(null, 'Failed request OTP!, check your email address!');
+        }
+    }
+
+    public function verifyOtp(Request $request) {
+        $user = User::where('email', $request->email)->where('otp', $request->otp)->first();
+        if ($user) {
+            return ResponseFormatter::success(null, "Your otp is verified");
+        }else {
+            return ResponseFormatter::error(null, 'Your otp is not verified');
+        }
+    }
 }
