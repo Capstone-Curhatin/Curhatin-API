@@ -13,6 +13,10 @@ class Category extends Model
         'name'
     ];
 
+    protected $hidden = [
+        'updated_at', 'created_at'
+    ];
+
     public function stories(){
         return $this->hasMany(Story::class, 'category_id', 'id');
     }

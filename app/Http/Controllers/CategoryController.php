@@ -13,7 +13,7 @@ class CategoryController extends Controller{
         if ($categories){
             return ResponseFormatter::success($categories, 'Get successfully!');
         }else{
-            return ResponseFormatter::error(['Failed get data!']);
+            return ResponseFormatter::error('Failed get data!');
         }
     }
 

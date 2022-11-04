@@ -22,7 +22,7 @@ class StoryController extends Controller {
             ]);
 
             if ($validate->fails()){
-                return ResponseFormatter::error( $validate->errors()->all());
+                return ResponseFormatter::error( $validate->errors()->first());
             }
 
             $story = new Story;
@@ -37,7 +37,7 @@ class StoryController extends Controller {
 
             return ResponseFormatter::success(null, 'Category create success');
         }catch (\Exception $err){
-            return ResponseFormatter::error( [$err]);
+            return ResponseFormatter::error($err);
         }
     }
 
@@ -46,7 +46,7 @@ class StoryController extends Controller {
         if ($stories){
             return ResponseFormatter::success($stories, 'Success get data');
         }else{
-            return ResponseFormatter::error(['Failed get data!']);
+            return ResponseFormatter::error('Failed get data!');
         }
     }
 

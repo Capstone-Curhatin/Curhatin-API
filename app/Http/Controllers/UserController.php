@@ -28,19 +28,19 @@ class UserController extends Controller {
             ]);
 
             if ($validate->fails()){
-                return ResponseFormatter::error(null, $validate->errors()->all());
+                return ResponseFormatter::error($validate->errors()->first());
             }
 
             $user = User::where('email', $request->email)->first();
 
             if(!$user){
-                return ResponseFormatter::error( ['Email not found']);
+                return ResponseFormatter::error('Email not found');
             }else if(!Hash::check($request->password, $user->password)){
-                return ResponseFormatter::error( ['Invalid password']);
+                return ResponseFormatter::error('Invalid password');
             }
 
             if (!Hash::check($request->password, $user->password, [])) {
-                throw new \Exception(['Invalid Credentials']);
+                throw new \Exception('Invalid Credentials');
             }
 
             $token = $user->createToken('authToken')->plainTextToken;
@@ -51,7 +51,7 @@ class UserController extends Controller {
             ], 'Authenticated');
 
         } catch (Exception $err) {
-            return ResponseFormatter::error( ['Authentication Failed']);
+            return ResponseFormatter::error('Authentication Failed');
         }
     }
 
@@ -66,7 +66,7 @@ class UserController extends Controller {
             ]);
 
             if ($validate->fails()){
-                return ResponseFormatter::error( $validate->errors()->all());
+                return ResponseFormatter::error( $validate->errors()->first());
             }
 
             $otp = rand(1000, 9999);
@@ -96,7 +96,6 @@ class UserController extends Controller {
 
     public function requestOtp(Request $request) {
         $otp = rand(1000, 9999);
-        Log::info("otp = " . $otp);
         $user = User::where('email', $request->email)->update(['otp' => $otp]);
 
         if ($user) {
@@ -110,16 +109,16 @@ class UserController extends Controller {
 
             return ResponseFormatter::success(null, 'Your OTP sent successfully, check your email');
         }else{
-            return ResponseFormatter::error(['Failed request OTP!']);
+            return ResponseFormatter::error('Failed request OTP!');
         }
     }
 
     public function verifyOtp(Request $request) {
         $user = User::where('email', $request->email)->where('otp', $request->otp)->first();
         if ($user) {
-            return ResponseFormatter::success(null, "Your otp is verified");
-        }else {
-            return ResponseFormatter::error( ['Your otp is not verified']);
+            return ResponseFormatter::success( null, "Your otp is verified");
+        }else{
+            return ResponseFormatter::error('Your otp is not verified');
         }
     }
 }
