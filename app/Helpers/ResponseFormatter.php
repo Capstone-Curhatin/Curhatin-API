@@ -22,10 +22,9 @@ class ResponseFormatter {
         return response()->json(self::$response);
     }
 
-    public static function error($data = null, $message = null, $success = false) {
+    public static function error($message = null, $success = false) {
         self::$response['success'] = $success;
         self::$response['message'] = $message;
-        self::$response['data'] = $data;
 
         return response()->json(self::$response);
     }

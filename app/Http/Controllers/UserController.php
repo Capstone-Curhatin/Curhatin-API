@@ -34,13 +34,13 @@ class UserController extends Controller {
             $user = User::where('email', $request->email)->first();
 
             if(!$user){
-                return ResponseFormatter::error( null, 'Email not found');
+                return ResponseFormatter::error( ['Email not found']);
             }else if(!Hash::check($request->password, $user->password)){
-                return ResponseFormatter::error(null, 'Invalid password');
+                return ResponseFormatter::error( ['Invalid password']);
             }
 
             if (!Hash::check($request->password, $user->password, [])) {
-                throw new \Exception('Invalid Credentials');
+                throw new \Exception(['Invalid Credentials']);
             }
 
             $token = $user->createToken('authToken')->plainTextToken;
@@ -51,7 +51,7 @@ class UserController extends Controller {
             ], 'Authenticated');
 
         } catch (Exception $err) {
-            return ResponseFormatter::error(null, 'Authentication Failed');
+            return ResponseFormatter::error( ['Authentication Failed']);
         }
     }
 
@@ -66,7 +66,7 @@ class UserController extends Controller {
             ]);
 
             if ($validate->fails()){
-                return ResponseFormatter::error(null, $validate->errors()->all());
+                return ResponseFormatter::error( $validate->errors()->all());
             }
 
             $otp = rand(1000, 9999);
@@ -90,7 +90,7 @@ class UserController extends Controller {
             return ResponseFormatter::success(null, 'User Registered, Check tour email');
 
         }catch(Exception $err){
-            return ResponseFormatter::error(null, $err);
+            return ResponseFormatter::error($err);
         }
     }
 
@@ -100,6 +100,7 @@ class UserController extends Controller {
         $user = User::where('email', $request->email)->update(['otp' => $otp]);
 
         if ($user) {
+
             $mail_details = [
                 'subject' => 'Your OTP',
                 'body' => 'Your OTP is: ' . $otp
@@ -109,7 +110,7 @@ class UserController extends Controller {
 
             return ResponseFormatter::success(null, 'Your OTP sent successfully, check your email');
         }else{
-            return ResponseFormatter::error(null, 'Failed request OTP!');
+            return ResponseFormatter::error(['Failed request OTP!']);
         }
     }
 
@@ -118,7 +119,7 @@ class UserController extends Controller {
         if ($user) {
             return ResponseFormatter::success(null, "Your otp is verified");
         }else {
-            return ResponseFormatter::error(null, 'Your otp is not verified');
+            return ResponseFormatter::error( ['Your otp is not verified']);
         }
     }
 }

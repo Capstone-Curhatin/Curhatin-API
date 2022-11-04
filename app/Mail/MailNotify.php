@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 class MailNotify extends Mailable
 {
     use Queueable, SerializesModels;
-    private $data = [];
+    public $data;
 
     /**
      * Create a new message instance.
@@ -25,9 +25,12 @@ class MailNotify extends Mailable
     }
 
     public function build() {
-        return $this->from('a004x0002@dicoding.org', 'Curhatin')
-            ->subject($this->data['subject'])
-            ->view('mail.index')->with('data', $this->data);
+        return $this->view('mail.index');
+//        return $this->from('postmaster@sandboxd837608ab80242adaa50172c306596da.mailgun.org', 'Curhatin')
+//            ->view('mail.index')->with('data', $this->data);
+//        return $this->from('curhatin@example.com', 'Curhatin')
+//            ->subject($this->data['subject'])
+//            ->view('mail.index')->with('data', $this->data);
     }
 
 //
