@@ -120,25 +120,6 @@ class UserController extends Controller {
         return ResponseFormatter::success($token, 'Token Revoked');
     }
 
-
-//    public function forgotPassword(Request $request){
-//        $user = User::where('email', $request->email);
-//        if ($user){
-//            return ResponseFormatter::success(null, 'User exist!');
-//        }else{
-//            return ResponseFormatter::error('User not found!');
-//        }
-//    }
-
-    public function newPassword(Request $request){
-        $user = User::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
-        if ($user){
-            return ResponseFormatter::success(null, 'Change password success');
-        }else{
-            return ResponseFormatter::error('Failed change password!, try again!');
-        }
-    }
-
     public function requestOtp(Request $request) {
         try {
             $otp = rand(1000, 9999);
@@ -168,6 +149,15 @@ class UserController extends Controller {
             return ResponseFormatter::success( null, "Your otp is verified");
         }else{
             return ResponseFormatter::error('Your otp is not verified');
+        }
+    }
+
+    public function newPassword(Request $request){
+        $user = User::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
+        if ($user){
+            return ResponseFormatter::success(null, 'Change password success');
+        }else{
+            return ResponseFormatter::error('Failed change password!, try again!');
         }
     }
 }

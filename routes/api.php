@@ -20,6 +20,7 @@ Route::post('login', [UserController::class, 'login']);
 Route::post('register', [UserController::class, 'register']);
 Route::get('request_otp', [UserController::class, 'requestOtp']);
 Route::post('verify_otp', [UserController::class, 'verifyOtp']);
+Route::post('new_password', [UserController::class, 'newPassword']);
 
 Route::middleware(['auth:sanctum'])->group(function (){
     // User
