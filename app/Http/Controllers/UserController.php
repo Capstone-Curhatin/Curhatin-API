@@ -7,7 +7,7 @@ use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Helpers\ResponseFormatter;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Fortify\Rules\Password;
 use Illuminate\Support\Facades\Hash;
@@ -17,6 +17,27 @@ class UserController extends Controller {
 
     public function fetch(Request $request){
         return ResponseFormatter::success($request->user(), 'Success');
+    }
+
+    public function update(Request $request){
+        $user = User::find($request->user()->id);
+
+        $image_path = "/images/users/" . $user->picture;
+        if (File::exists($image_path)){
+            File::delete($image_path);
+        }
+
+        if ($request->picture){
+            $getImage = $request->picture;
+            $imageName = time(). '.' . $getImage->extension();
+            $imagePath = public_path(). '/images/users';
+
+            $user->picture = $imageName;
+            $getImage->move($imagePath, $imageName);
+        }
+        $user->update($request->all());
+
+        return ResponseFormatter::success($user, 'User updated');
     }
 
     public function login(Request $request) {
@@ -81,7 +102,7 @@ class UserController extends Controller {
             ]);
 
             $mail_details = [
-                'subject' => 'Your OTP',
+                'subject' => 'Your Curhatin OTP',
                 'body' => 'Your OTP is: ' . $otp
             ];
 
@@ -94,22 +115,50 @@ class UserController extends Controller {
         }
     }
 
-    public function requestOtp(Request $request) {
-        $otp = rand(1000, 9999);
-        $user = User::where('email', $request->email)->update(['otp' => $otp]);
+    public function logout(Request $request) {
+        $token = $request->user()->currentAccessToken()->delete();
+        return ResponseFormatter::success($token, 'Token Revoked');
+    }
 
-        if ($user) {
 
-            $mail_details = [
-                'subject' => 'Your OTP',
-                'body' => 'Your OTP is: ' . $otp
-            ];
+//    public function forgotPassword(Request $request){
+//        $user = User::where('email', $request->email);
+//        if ($user){
+//            return ResponseFormatter::success(null, 'User exist!');
+//        }else{
+//            return ResponseFormatter::error('User not found!');
+//        }
+//    }
 
-            Mail::to($request->email)->send(new MailNotify($mail_details));
-
-            return ResponseFormatter::success(null, 'Your OTP sent successfully, check your email');
+    public function newPassword(Request $request){
+        $user = User::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
+        if ($user){
+            return ResponseFormatter::success(null, 'Change password success');
         }else{
-            return ResponseFormatter::error('Failed request OTP!');
+            return ResponseFormatter::error('Failed change password!, try again!');
+        }
+    }
+
+    public function requestOtp(Request $request) {
+        try {
+            $otp = rand(1000, 9999);
+            $user = User::where('email', $request->email)->update(['otp' => $otp]);
+
+            if ($user) {
+
+                $mail_details = [
+                    'subject' => 'Your Curhatin OTP',
+                    'body' => 'Your OTP is: ' . $otp
+                ];
+
+                Mail::to('wahed.blog99@gmail.com')->send(new MailNotify($mail_details));
+
+                return ResponseFormatter::success(null, 'Your OTP sent successfully, check your email');
+            }else{
+                return ResponseFormatter::error('Failed request OTP!');
+            }
+        }catch (Exception $err){
+            return ResponseFormatter::error($err);
         }
     }
 

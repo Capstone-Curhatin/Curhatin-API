@@ -22,7 +22,10 @@ Route::get('request_otp', [UserController::class, 'requestOtp']);
 Route::post('verify_otp', [UserController::class, 'verifyOtp']);
 
 Route::middleware(['auth:sanctum'])->group(function (){
+    // User
     Route::get('fetch', [UserController::class, 'fetch']);
+    Route::post('update', [UserController::class, 'update']);
+    Route::post('logout', [UserController::class, 'logout']);
 
     // category
     Route::get('getAllCategory', [CategoryController::class, 'getAllCategory']);
@@ -30,4 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
     // story
     Route::post('createStory', [StoryController::class, 'createStory']);
     Route::get('getAllStory', [StoryController::class, 'getAllStory']);
+    Route::get('getStoryByCategory', [StoryController::class, 'getStoryByCategory']);
+    Route::get('getStoryByUser', [StoryController::class, 'getStoryByUser']);
+    Route::delete('deleteStory', [StoryController::class, 'deleteStory']);
 });

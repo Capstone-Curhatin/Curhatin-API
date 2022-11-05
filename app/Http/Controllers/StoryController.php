@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseFormatter;
+use App\Models\Category;
 use App\Models\Story;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -42,12 +43,35 @@ class StoryController extends Controller {
     }
 
     public function getAllStory(){
-        $stories = Story::with('category', 'user')->get();
+        $stories = Story::with('category', 'user')->orderByDesc('created_at');
         if ($stories){
-            return ResponseFormatter::success($stories, 'Success get data');
+            return ResponseFormatter::paginate($stories->paginate(20));
         }else{
             return ResponseFormatter::error('Failed get data!');
         }
+    }
+
+    public function getStoryByCategory(Request $request){
+        $stories = Story::with('category', 'user')->where('category_id', $request->category_id)->orderByDesc('created_at');
+        if ($stories){
+            return ResponseFormatter::paginate($stories->paginate(20));
+        }else{
+            return ResponseFormatter::error('Data not found!');
+        }
+    }
+
+    public function getStoryByUser(Request $request){
+        $stories = Story::with('category', 'user')->where('user_id', $request->user()->id)->orderByDesc('created_at');
+        if ($stories){
+            return ResponseFormatter::paginate($stories->paginate(20));
+        }else{
+            return ResponseFormatter::error('Data not found!');
+        }
+    }
+
+    public function deleteStory($id){
+        Story::destroy($id);
+        return ResponseFormatter::success(null, "Success deleted story");
     }
 
 }

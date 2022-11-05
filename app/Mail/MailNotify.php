@@ -26,11 +26,11 @@ class MailNotify extends Mailable
 
     public function build() {
 //        return $this->view('mail.index');
-//        return $this->from('postmaster@sandboxd837608ab80242adaa50172c306596da.mailgun.org', 'Curhatin')
-//            ->view('mail.index')->with('data', $this->data);
         return $this->from('curhatin.mail@gmail.com', 'Curhatin')
-            ->subject($this->data['subject'])
             ->view('mail.index')->with('data', $this->data);
+//        return $this
+//            ->subject($this->data['subject'])
+//            ->view('mail.index')->with('data', $this->data);
     }
 
 //

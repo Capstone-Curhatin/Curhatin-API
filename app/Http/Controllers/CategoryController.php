@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller{
 
     public function getAllCategory() {
-        $categories = Category::all();
+        $categories = Category::orderBy('name')->get();
         if ($categories){
             return ResponseFormatter::success($categories, 'Get successfully!');
         }else{
