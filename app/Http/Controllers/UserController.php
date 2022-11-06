@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\MailNotify;
+use Carbon\Carbon;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -64,6 +65,10 @@ class UserController extends Controller {
                 throw new \Exception('Invalid Credentials');
             }
 
+            if ($user->email_verified_at == null){
+                return ResponseFormatter::error('Your account must be verification');
+            }
+
             $token = $user->createToken('authToken')->plainTextToken;
             return ResponseFormatter::success([
                 'access_token' => $token,
@@ -90,27 +95,41 @@ class UserController extends Controller {
                 return ResponseFormatter::error( $validate->errors()->first());
             }
 
-            $otp = rand(1000, 9999);
 
             User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'role' => $request->role,
-                'otp' => $otp,
                 'password' => Hash::make($request->password)
             ]);
 
+            $otp = rand(1000, 9999);
             $mail_details = [
                 'subject' => 'Your Curhatin OTP',
                 'body' => 'Your OTP is: ' . $otp
             ];
 
             Mail::to($request->email)->send(new MailNotify($mail_details));
+            User::where('email', $request->email)->update(['otp' => $otp]);
 
             return ResponseFormatter::success(null, 'User Registered, Check tour email');
 
         }catch(Exception $err){
+            return ResponseFormatter::error($err);
+        }
+    }
+
+    public function userVerification(Request $request){
+        try {
+            $user = User::where('email', $request->email)->where('otp', $request->otp)->first();
+            if ($user){
+                $user->markEmailAsVerified();
+                return ResponseFormatter::success(null, 'Your account is verified');
+            }else{
+                return ResponseFormatter::error('Failed verification account');
+            }
+        }catch (Exception $err){
             return ResponseFormatter::error($err);
         }
     }
