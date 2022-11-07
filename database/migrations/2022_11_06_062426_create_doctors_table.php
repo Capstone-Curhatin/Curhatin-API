@@ -13,14 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('stories', function (Blueprint $table) {
+        Schema::create('doctors', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->longText('body');
-            $table->boolean('is_anonymous');
-            $table->bigInteger('category_id');
-            $table->bigInteger('user_id');
-            $table->integer('comments')->default(0);
             $table->timestamps();
         });
     }
@@ -32,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stories');
+        Schema::dropIfExists('doctors');
     }
 };

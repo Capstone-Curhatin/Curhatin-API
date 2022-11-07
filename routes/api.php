@@ -16,14 +16,8 @@ use App\Http\Controllers\StoryController;
 |
 */
 
-Route::post('login', [UserController::class, 'login']);
-Route::post('register', [UserController::class, 'register']);
-Route::get('request_otp', [UserController::class, 'requestOtp']);
-Route::post('verify_otp', [UserController::class, 'verifyOtp']);
-Route::post('new_password', [UserController::class, 'newPassword']);
-Route::post('user_verification', [UserController::class, 'userVerification']);
-
-Route::middleware(['auth:sanctum'])->group(function (){
+// sanctum -> api
+Route::middleware(['auth:api'])->group(function (){
     // User
     Route::get('fetch', [UserController::class, 'fetch']);
     Route::post('update', [UserController::class, 'update']);
@@ -38,4 +32,14 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::get('getStoryByCategory', [StoryController::class, 'getStoryByCategory']);
     Route::get('getStoryByUser', [StoryController::class, 'getStoryByUser']);
     Route::delete('deleteStory', [StoryController::class, 'deleteStory']);
+});
+
+Route::withoutMiddleware('auth:api')->group(function() {
+    Route::post('login', [UserController::class, 'login']);
+    Route::post('register', [UserController::class, 'register']);
+    Route::get('request_otp', [UserController::class, 'requestOtp']);
+    Route::post('verify_otp', [UserController::class, 'verifyOtp']);
+    Route::post('new_password', [UserController::class, 'newPassword']);
+    Route::post('user_verification', [UserController::class, 'userVerification']);
+
 });
