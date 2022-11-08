@@ -17,13 +17,8 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller {
 
     public function fetch(Request $request){
-        $user = User::find($request->user()->id);
-        if ($user->role == 1){
-            $doctor = User::with('doctor')->find($request->user()->id);
-            return ResponseFormatter::success($doctor, 'Success');
-        }else{
-            return ResponseFormatter::success($user, 'Success');
-        }
+        $user = User::with('doctor')->find($request->user()->id);
+        return ResponseFormatter::success($user, 'Success');
     }
 
     public function update(Request $request){
@@ -59,7 +54,7 @@ class UserController extends Controller {
                 return ResponseFormatter::error($validate->errors()->first());
             }
 
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->with('doctor')->first();
 
             if(!$user){
                 return ResponseFormatter::error('Email not found');
@@ -75,12 +70,27 @@ class UserController extends Controller {
                 return ResponseFormatter::error('Your account must be verification');
             }
 
-            $token = $user->createToken('authToken')->plainTextToken;
-            return ResponseFormatter::success([
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-                'user' => $user
-            ], 'Authenticated');
+            if ($user->role == 0){
+                $token = $user->createToken('authToken')->plainTextToken;
+                return ResponseFormatter::success([
+                    'access_token' => $token,
+                    'token_type' => 'Bearer',
+                    'user' => $user
+                ], 'Authenticated');
+            }else {
+                if (!$user->doctor->is_verified && $user->role == 1){
+                    return ResponseFormatter::error("We are verifying your doctoral account!");
+                }else{
+                    $token = $user->createToken('authToken')->plainTextToken;
+                    return ResponseFormatter::success([
+                        'access_token' => $token,
+                        'token_type' => 'Bearer',
+                        'user' => $user
+                    ], 'Authenticated');
+                }
+            }
+
+
 
         } catch (Exception $err) {
             return ResponseFormatter::error('Authentication Failed');
