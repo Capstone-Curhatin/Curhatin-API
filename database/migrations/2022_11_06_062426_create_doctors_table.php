@@ -15,6 +15,13 @@ return new class extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('user_id');
+            $table->string('str_number');
+            $table->bigInteger('category_id')->nullable();
+            $table->string('place_of_practice')->nullable();
+            $table->boolean('is_verified')->default(false);
+            $table->bigInteger('reviews')->nullable();
+            $table->json('graduates')->nullable();
             $table->timestamps();
         });
     }

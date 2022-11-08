@@ -20,8 +20,7 @@ return new class extends Migration
             $table->boolean('is_premium')->nullable();
             $table->dateTime('premium_period')->nullable();
             $table->integer('otp')->nullable();
-            $table->boolean('doctor_verified')->nullable();
-            $table->bigInteger('doctor_id')->nullable();
+            $table->string('fcm')->nullable();
         });
     }
 
@@ -38,8 +37,7 @@ return new class extends Migration
             $table->dropColumn('is_premium');
             $table->dropColumn('premium_period');
             $table->dropColumn('otp');
-            $table->dropColumn('doctor_verified');
-            $table->dropColumn('doctor_id');
+            $table->dropColumn('fcm');
         });
     }
 };

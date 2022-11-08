@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\MailNotify;
-use Carbon\Carbon;
+use App\Models\Doctor;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,7 +17,13 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller {
 
     public function fetch(Request $request){
-        return ResponseFormatter::success($request->user(), 'Success');
+        $user = User::find($request->user()->id);
+        if ($user->role == 1){
+            $doctor = User::with('doctor')->find($request->user()->id);
+            return ResponseFormatter::success($doctor, 'Success');
+        }else{
+            return ResponseFormatter::success($user, 'Success');
+        }
     }
 
     public function update(Request $request){
@@ -95,14 +101,21 @@ class UserController extends Controller {
                 return ResponseFormatter::error( $validate->errors()->first());
             }
 
-
-            User::create([
+            $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'role' => $request->role,
                 'password' => Hash::make($request->password)
             ]);
+
+            if ($request->role == 1){
+                $doctor = new Doctor();
+                $doctor->user_id = $user->id;
+                $doctor->str_number = $request->str_number;
+                $doctor->save();
+            }
+
 
             $otp = rand(1000, 9999);
             $mail_details = [
@@ -113,7 +126,7 @@ class UserController extends Controller {
             Mail::to($request->email)->send(new MailNotify($mail_details));
             User::where('email', $request->email)->update(['otp' => $otp]);
 
-            return ResponseFormatter::success(null, 'User Registered, Check tour email');
+            return ResponseFormatter::success(null, 'User Registered, Check your email');
 
         }catch(Exception $err){
             return ResponseFormatter::error($err);

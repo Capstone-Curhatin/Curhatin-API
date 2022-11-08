@@ -17,7 +17,7 @@ use App\Http\Controllers\StoryController;
 */
 
 // sanctum -> api
-Route::middleware(['auth:api'])->group(function (){
+Route::middleware(['auth:sanctum'])->group(function (){
     // User
     Route::get('fetch', [UserController::class, 'fetch']);
     Route::post('update', [UserController::class, 'update']);

@@ -68,4 +68,8 @@ class User extends Authenticatable
     public function stories(){
         return $this->hasMany(Story::class, 'user_id', 'id');
     }
+
+    public function doctor(){
+        return $this->hasOne(Doctor::class, 'user_id', 'id');
+    }
 }
