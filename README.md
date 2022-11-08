@@ -8,8 +8,8 @@
 **Request**
 ```json 
 {
-    "email": "wahed.blog99@gmail.com",
-    "password": "wahid123"
+    "email": String,
+    "password": String
 }
 ```
 
@@ -40,6 +40,7 @@
     }
 }
 ```
+***
 <br/>
 
 ### Register (POST)
@@ -48,20 +49,25 @@
 **Request**
 ```json 
 {
-    "name": "Abd. Wahid",
-    "email": "wahid@wa.id",
-    "phone": "087860501411",
-    "role": 0,
-    "password": "wahid123"
+    "name": String,
+    "email": String,
+    "phone": String,
+    "role": Int,
+    "password": String,
+    "str_number": String
 }
 ```
+**Note**
+- role: 0 user, 1 doctor
+- str_number: if registration as doctor or role == 1
+
+***
 
 **Response**
 ```json
 {
     "success": true,
-    "message": "User Registered, Check tour email",
-    "data": null
+    "message": "User Registered, Check tour email"
 }
 ```
 
@@ -73,8 +79,8 @@
 **Request**
 ```json 
 {
-    "email": "wahed.blog99@gmail.com",
-    "otp": 3835
+    "email": String,
+    "otp": Int
 }
 ```
 
@@ -82,11 +88,10 @@
 ```json
 {
     "success": true,
-    "message": "Your account is verified",
-    "data": null
+    "message": "Your account is verified"
 }
 ```
-
+***
 <br/>
 
 ### Request OTP (GET)
@@ -95,7 +100,7 @@
 **Request**
 ```json 
 {
-    "email": "wahed.blog99@gmail.com"
+    "email": String
 }
 ```
 
@@ -103,11 +108,10 @@
 ```json
 {
     "success": true,
-    "message": "Your OTP sent successfully, check your email",
-    "data": null
+    "message": "Your OTP sent successfully, check your email"
 }
 ```
-
+***
 <br/>
 
 ### Verification OTP (POST)
@@ -116,8 +120,8 @@
 **Request**
 ```json 
 {
-    "email": "wahed.blog99@gmail.com",
-    "otp": 9011
+    "email": String,
+    "otp": Int
 }
 ```
 
@@ -125,7 +129,58 @@
 ```json
 {
     "success": true,
-    "message": "Your otp is verified",
-    "data": null
+    "message": "Your otp is verified"
 }
 ```
+***
+
+<br/>
+
+### Update User (POST)
+>/api/update
+
+**Request**
+```json 
+{
+    "picture": File,
+    "name": String
+}
+```
+
+**Response**
+```json
+{
+    "success": true,
+    "message": "User updated"
+}
+```
+
+**Note**
+- all field is nullable
+
+***
+
+<br/>
+
+### Update Doctor (POST)
+>/api/update_doctor
+
+**Request**
+```json 
+{
+    "place_of_practice": String,
+    "graduates": array of string,
+    "categories": array of string
+}
+```
+
+**Response**
+```json
+{
+    "success": true,
+    "message": "User updated"
+}
+```
+
+**Note**
+- all field is nullable

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->integer('role')->nullable();
             $table->string('picture')->nullable();
-            $table->string('phone')->nullable();
+            $table->string('phone')->nullable()->unique();
             $table->boolean('is_premium')->nullable();
             $table->dateTime('premium_period')->nullable();
             $table->integer('otp')->nullable();

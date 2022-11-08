@@ -37,9 +37,17 @@ class UserController extends Controller {
             $user->picture = $imageName;
             $getImage->move($imagePath, $imageName);
         }
+
         $user->update($request->all());
 
         return ResponseFormatter::success($user, 'User updated');
+    }
+
+    public function updateDoctor(Request $request){
+        $user = User::find($request->user()->id);
+
+        Doctor::where('user_id', $user->id)->update($request->all());
+        return ResponseFormatter::success($user->doctor, 'Doctor updated');
     }
 
     public function login(Request $request) {
@@ -90,8 +98,6 @@ class UserController extends Controller {
                 }
             }
 
-
-
         } catch (Exception $err) {
             return ResponseFormatter::error('Authentication Failed');
         }
@@ -102,8 +108,9 @@ class UserController extends Controller {
             $validate = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'max:30'],
                 'email' => ['required', 'email', 'max:50', 'unique:users'],
-                'phone' => ['required', 'string', 'max:15'],
+                'phone' => ['required', 'string', 'max:15', 'unique:users'],
                 'role' => ['required', 'integer', 'max:1'],
+                'str_number' => ['string', 'unique:doctors'],
                 'password' => ['required', 'string', 'min:6', new Password]
             ]);
 

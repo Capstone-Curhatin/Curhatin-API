@@ -16,5 +16,6 @@ class Doctor extends Model
 
     protected $casts = [
         'graduates' => 'array',
+        'categories' => 'array'
     ];
 }
