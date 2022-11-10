@@ -181,7 +181,7 @@ class UserController extends Controller {
                     'body' => 'Your OTP is: ' . $otp
                 ];
 
-                Mail::to('wahed.blog99@gmail.com')->send(new MailNotify($mail_details));
+                Mail::to($request->email)->send(new MailNotify($mail_details));
 
                 return ResponseFormatter::success(null, 'Your OTP sent successfully, check your email');
             }else{
