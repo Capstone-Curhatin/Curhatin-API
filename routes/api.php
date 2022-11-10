@@ -22,6 +22,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::get('fetch', [UserController::class, 'fetch']);
     Route::post('update', [UserController::class, 'update']);
     Route::post('update_doctor', [UserController::class, 'updateDoctor']);
+    Route::post('update_fcm', [UserController::class, 'updateFCMToken']);
     Route::post('logout', [UserController::class, 'logout']);
 
     // category

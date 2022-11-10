@@ -209,4 +209,24 @@ class UserController extends Controller {
             return ResponseFormatter::error('Failed change password!, try again!');
         }
     }
+
+    public function updateFCMToken(Request $request){
+        try {
+            $validate = Validator::make($request->all(), [
+               'fcm' => ['required']
+            ]);
+
+            if ($validate->fails()){
+                return ResponseFormatter::error($validate->errors()->first());
+            }
+
+            $user = User::where('id', $request->user()->id)->update(['fcm' => $request->fcm]);
+            if (!$user){
+                return ResponseFormatter::error('user not found!');
+            }
+            return ResponseFormatter::success(null,'Fcm updated');
+        }catch (Exception $err){
+            return ResponseFormatter::error('something wen\'t wrong!');
+        }
+    }
 }
