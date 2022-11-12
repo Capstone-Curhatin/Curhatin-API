@@ -13,14 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('reports', function (Blueprint $table) {
+        Schema::create('chat', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id');
-            $table->bigInteger('user_report_id');
-            $table->integer('report_type');
-            $table->longText('description');
-            $table->longText('chat_message')->nullable();
-            $table->bigInteger('story_id')->nullable();
+            $table->boolean('is_waiting')->default(true);
+            $table->boolean('is_online');
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reports');
+        Schema::dropIfExists('chat');
     }
 };
