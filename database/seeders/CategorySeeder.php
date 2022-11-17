@@ -19,10 +19,10 @@ class CategorySeeder extends Seeder
     {
 
         $categories = [
-            'Asmara', 'Percintaan', 'Rumah Tangga', 'Keluarga',
-            'Finansial', 'Mental Health', 'Insecure', 'Tempat Kerja', 'Bisnis',
-            'Rahasia', 'Aib', 'Kejahatan', 'Penyakit Hati', 'Kebencian','Sekolah',
-            'Perkuliahan', 'Mimpi', 'Harapan', 'Bosan Hidup', 'Random', 'Penyimpangan', 'Penyakit'
+            'Adiksi', 'Depresi', 'Gangguan Kecemasan',
+            'Gangguan Kepribadian', 'Gangguan Mood', 'Insecure',
+            'Keluarga & Hubungan', 'Pekerjaan & Karir', 'Pengembangan Diri',
+            'Penyakit yang diderita', 'Percintaan', 'Stres', 'Trauma'
         ];
 
         foreach ($categories as $category){
