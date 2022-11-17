@@ -15,7 +15,6 @@ class StoryController extends Controller {
 
         try {
             $validate = Validator::make($request->all(), [
-                'title' => ['required'],
                 'body' => ['required'],
                 'is_anonymous' => ['required'],
                 'category_id' => ['required'],
@@ -26,7 +25,6 @@ class StoryController extends Controller {
             }
 
             $story = new Story;
-            $story->title = $request->title;
             $story->body = $request->body;
             $story->category_id = $request->category_id;
             $story->user_id = $request->user()->id;

@@ -10,14 +10,13 @@ class Story extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
         'body',
         'category_id',
         'is_anonymous'
     ];
 
     protected $hidden = [
-        'category_id', 'user_id', 'updated_at', 'created_at'
+        'category_id', 'user_id', 'updated_at', 'created_at', 'title'
     ];
 
     public function user() {
