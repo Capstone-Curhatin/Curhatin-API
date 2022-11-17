@@ -19,7 +19,6 @@ class StoryController extends Controller {
                 'body' => ['required'],
                 'is_anonymous' => ['required'],
                 'category_id' => ['required'],
-                'user_id' => ['required'],
             ]);
 
             if ($validate->fails()){
@@ -30,7 +29,7 @@ class StoryController extends Controller {
             $story->title = $request->title;
             $story->body = $request->body;
             $story->category_id = $request->category_id;
-            $story->user_id = $request->user_id;
+            $story->user_id = $request->user()->id;
             $story->is_anonymous = $request->is_anonymous;
             $story->created_at = Carbon::now();
             $story->updated_at = Carbon::now();
