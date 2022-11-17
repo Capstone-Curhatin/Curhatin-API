@@ -16,7 +16,7 @@ class Story extends Model
     ];
 
     protected $hidden = [
-        'category_id', 'user_id', 'updated_at', 'created_at', 'title'
+        'category_id', 'user_id', 'updated_at', 'title'
     ];
 
     public function user() {
