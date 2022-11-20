@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('stories', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
             $table->longText('body');
             $table->boolean('is_anonymous');
             $table->bigInteger('category_id');
