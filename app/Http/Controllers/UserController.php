@@ -34,7 +34,7 @@ class UserController extends Controller {
             $imageName = time(). '.' . $getImage->extension();
             $imagePath = public_path(). '/images/users';
 
-            $user->picture = $imageName;
+            $user->picture = "http://128.199.200.133/public/images/users/" . $imageName;
             $getImage->move($imagePath, $imageName);
         }
 
