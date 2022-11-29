@@ -16,8 +16,18 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller {
 
-    public function fetch(Request $request){
+    public function fetch(Request $request, int $id = null){
         $user = User::with('doctor')->find($request->user()->id);
+
+        if ($id != null){
+            $user = User::with('doctor')->find($id);
+        }
+
+        return ResponseFormatter::success($user, 'Success');
+    }
+
+    public function userId(int $id){
+        $user = User::with('doctor')->find($id);
         return ResponseFormatter::success($user, 'Success');
     }
 
