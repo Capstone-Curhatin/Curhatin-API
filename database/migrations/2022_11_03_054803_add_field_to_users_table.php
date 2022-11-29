@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean('is_premium')->nullable();
             $table->dateTime('premium_period')->nullable();
             $table->integer('otp')->nullable();
-            $table->string('fcm')->nullable();
+            $table->longText('fcm')->nullable();
         });
     }
 

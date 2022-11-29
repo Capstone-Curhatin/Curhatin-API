@@ -22,6 +22,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::get('fetch', [UserController::class, 'fetch']);
     Route::post('update', [UserController::class, 'update']);
     Route::post('update_doctor', [UserController::class, 'updateDoctor']);
+    Route::post('update_fcm', [UserController::class, 'updateFCMToken']);
     Route::post('logout', [UserController::class, 'logout']);
 
     // category
@@ -42,6 +43,5 @@ Route::withoutMiddleware('auth:api')->group(function() {
     Route::post('verify_otp', [UserController::class, 'verifyOtp']);
     Route::post('new_password', [UserController::class, 'newPassword']);
     Route::post('user_verification', [UserController::class, 'userVerification']);
-    Route::post('update_fcm', [UserController::class, 'updateFCMToken']);
     Route::post('updatePassword', [UserController::class, 'newPassword']);
 });
