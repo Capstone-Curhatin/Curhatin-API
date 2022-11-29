@@ -24,7 +24,7 @@ class UserController extends Controller {
     public function update(Request $request){
         $user = User::find($request->user()->id);
 
-        $image_path = "/images/users/" . $user->picture;
+        $image_path =  public_path() . "/images/users/" . $user->picture;
         if (File::exists($image_path)){
             File::delete($image_path);
         }
@@ -32,7 +32,7 @@ class UserController extends Controller {
         if ($request->picture){
             $getImage = $request->picture;
             $imageName = time(). '.' . $getImage->extension();
-            $imagePath = public_path(). '/images/users';
+            $imagePath = public_path() . '/images/users';
 
             $user->picture = "http://128.199.200.133/public/images/users/" . $imageName;
             $getImage->move($imagePath, $imageName);
