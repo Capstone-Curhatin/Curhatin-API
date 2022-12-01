@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
@@ -20,7 +21,6 @@ use App\Http\Controllers\StoryController;
 Route::middleware(['auth:sanctum'])->group(function (){
     // User
     Route::get('fetch/{id?}', [UserController::class, 'fetch']);
-//    Route::get('fetch/{id}', [UserController::class, 'userId']);
     Route::post('update', [UserController::class, 'update']);
     Route::post('update_doctor', [UserController::class, 'updateDoctor']);
     Route::post('update_fcm', [UserController::class, 'updateFCMToken']);
@@ -35,6 +35,9 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::get('getStoryByCategory', [StoryController::class, 'getStoryByCategory']);
     Route::get('getStoryByUser', [StoryController::class, 'getStoryByUser']);
     Route::delete('deleteStory', [StoryController::class, 'deleteStory']);
+
+    // Report
+    Route::post('sendReport', [ReportController::class, 'sendReport']);
 });
 
 Route::withoutMiddleware('auth:api')->group(function() {
