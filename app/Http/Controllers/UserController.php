@@ -26,11 +26,6 @@ class UserController extends Controller {
         return ResponseFormatter::success($user, 'Success');
     }
 
-    public function userId(int $id){
-        $user = User::with('doctor')->find($id);
-        return ResponseFormatter::success($user, 'Success');
-    }
-
     public function update(Request $request){
         $user = User::find($request->user()->id);
 

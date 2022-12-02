@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -38,6 +39,9 @@ Route::middleware(['auth:sanctum'])->group(function (){
 
     // Report
     Route::post('sendReport', [ReportController::class, 'sendReport']);
+
+    // send notification
+    Route::post('sendNotification', [NotificationController::class, 'sendNotification']);
 });
 
 Route::withoutMiddleware('auth:api')->group(function() {
