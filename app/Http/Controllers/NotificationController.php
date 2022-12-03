@@ -50,7 +50,7 @@ class NotificationController extends Controller
         curl_close($ch);
 
         // Fcm Response
-        dd($result);
+        return ResponseFormatter::success($result);
     }
 
 }
