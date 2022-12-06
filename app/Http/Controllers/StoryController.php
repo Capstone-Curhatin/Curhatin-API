@@ -41,6 +41,7 @@ class StoryController extends Controller {
 
     public function getAllStory(){
         $stories = Story::with('category', 'user')->orderByDesc('created_at');
+
         if ($stories){
             return ResponseFormatter::paginate($stories->paginate(20));
         }else{
@@ -48,8 +49,8 @@ class StoryController extends Controller {
         }
     }
 
-    public function getStoryByCategory(Request $request){
-        $stories = Story::with('category', 'user')->where('category_id', $request->category_id)->orderByDesc('created_at');
+    public function getStoryByCategory(int $category_id){
+        $stories = Story::with('category', 'user')->where('category_id', $category_id)->orderByDesc('created_at');
         if ($stories){
             return ResponseFormatter::paginate($stories->paginate(20));
         }else{

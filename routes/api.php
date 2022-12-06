@@ -33,7 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
     // story
     Route::post('createStory', [StoryController::class, 'createStory']);
     Route::get('getAllStory', [StoryController::class, 'getAllStory']);
-    Route::get('getStoryByCategory', [StoryController::class, 'getStoryByCategory']);
+    Route::get('getStoryByCategory/{category_id}', [StoryController::class, 'getStoryByCategory']);
     Route::get('getStoryByUser', [StoryController::class, 'getStoryByUser']);
     Route::delete('deleteStory', [StoryController::class, 'deleteStory']);
     Route::get('incrementComment/{id}', [StoryController::class, 'incrementComment']);
