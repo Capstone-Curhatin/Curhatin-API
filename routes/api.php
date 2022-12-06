@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,10 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::post('update_doctor', [UserController::class, 'updateDoctor']);
     Route::post('update_fcm', [UserController::class, 'updateFCMToken']);
     Route::post('logout', [UserController::class, 'logout']);
+
+    // Doctor
+    Route::get('getDoctor', [DoctorController::class, 'getAll']);
+    Route::get('detailDoctor/{id}', [DoctorController::class, 'detail']);
 
     // category
     Route::get('getAllCategory', [CategoryController::class, 'getAllCategory']);
