@@ -71,4 +71,12 @@ class StoryController extends Controller {
         return ResponseFormatter::success(null, "Success deleted story");
     }
 
+    public function incrementComment(int $id){
+        Story::where('id', $id)->increment('comments', 1);
+    }
+
+    public function decrementComment(int $id){
+        Story::where('id', $id)->decrement('comments', 1);
+    }
+
 }
