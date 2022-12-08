@@ -17,8 +17,8 @@ class DoctorController extends Controller
         }
     }
 
-    public function detail(int $id = null){
-        $doctor = User::with('doctor')->find($id)->where('role', 1)->get();
+    public function detail(int $id){
+        $doctor = User::with('doctor')->find($id)->where('role', 1)->first();
         if ($doctor){
             return ResponseFormatter::success($doctor, 'Success get all doctor');
         }else{
