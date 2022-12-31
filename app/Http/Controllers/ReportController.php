@@ -17,9 +17,9 @@ class ReportController extends Controller {
                 'description' => ['required'],
             ]);
 
-//            if ($validate->fails()){
-//                return ResponseFormatter::error($validate->errors()->first());
-//            }
+            if ($validate->fails()){
+                return ResponseFormatter::error($validate->errors()->first());
+            }
 
             $report = new Report;
             $report->user_id = $request->user()->id;
